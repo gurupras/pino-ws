@@ -23,10 +23,13 @@ export default async function (options: Options) {
 
   let wsClosed = false
 
-  ws.on('open', () => {
+  const flushBuffer = () => {
     for (const entry of buffer) {
       ws.send(JSON.stringify(entry))
     }
+  }
+  ws.on('open', () => {
+    flushBuffer()
   })
   ws.on('error', () => {
     wsClosed = true
@@ -37,11 +40,19 @@ export default async function (options: Options) {
 
   return build(async (source) => {
     for await (const obj of source) {
-      if (ws.readyState === ws.OPEN) {
+      if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify(obj))
       } else if (!wsClosed) {
         buffer.push(obj)
       }
+    }
+  }, {
+    close (_, cb) {
+      if (ws.readyState === WebSocket.OPEN) {
+        flushBuffer()
+      }
+      ws.on('close', () => cb())
+      ws.close()
     }
   })
 }
