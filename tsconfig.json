@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["es6"],
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2019"
+  },
+  "exclude": ["dist", "node_modules", "test"],
+  "include": ["index.ts", "src"]
+}
