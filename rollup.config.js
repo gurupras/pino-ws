@@ -6,10 +6,12 @@ export default {
   input: './index.ts',
   output: [{
     file: 'dist/index.cjs',
-    format: 'cjs'
+    format: 'cjs',
+    sourcemap: true
   }, {
     file: 'dist/index.js',
-    format: 'es'
+    format: 'es',
+    sourcemap: true
   }],
   plugins: [
     typescript(),

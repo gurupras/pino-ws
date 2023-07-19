@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "build:js": "vite build",
+    "build:js": "rollup -c rollup.config.js",
     "clean": "rimraf dist",
     "build": "run-s clean build:js"
   },
