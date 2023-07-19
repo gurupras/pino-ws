@@ -49,10 +49,13 @@ describe('pino-ws', () => {
     const ws = await socketPromise
     const promise = new Promise<void>(resolve => {
       ws.onmessage = e => {
-        resolve()
+        const obj: any = JSON.parse(e.data as string)
+        resolve(obj)
       }
     })
     log.info('test')
-    await promise
+    await expect(promise).resolves.toMatchObject({
+      msg: 'test'
+    })
   })
 })
