@@ -42,7 +42,7 @@
   "files": [
     "*.ts",
     "tsconfig.json",
-    "./dist/"
+    "dist"
   ],
   "exports": {
     ".": {
