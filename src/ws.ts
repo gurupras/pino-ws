@@ -21,10 +21,26 @@ export default async function (options: Options) {
 
   const ws = new WebSocket(url)
 
+  let wsClosed = false
+
+  ws.on('open', () => {
+    for (const entry of buffer) {
+      ws.send(JSON.stringify(entry))
+    }
+  })
+  ws.on('error', () => {
+    wsClosed = true
+  })
+  ws.on('close', () => {
+    wsClosed = true
+  })
+
   return build(async (source) => {
     for await (const obj of source) {
       if (ws.readyState === ws.OPEN) {
         ws.send(JSON.stringify(obj))
+      } else if (!wsClosed) {
+        buffer.push(obj)
       }
     }
   })
